@@ -35,6 +35,10 @@ This is a personal project to understand the relationship of Node, Postgres, Seq
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
+### `npm test`
+
+Runs a full test on all CRUD implementation using Jasmine.
+
 ## Features
 
 - Express routing
