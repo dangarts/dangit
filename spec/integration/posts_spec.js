@@ -1,7 +1,6 @@
 const request = require("request");
 const server = require("../../src/server");
 const base = "http://localhost:3000/topics";
-
 const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
 const Post = require("../../src/db/models").Post;
@@ -64,6 +63,28 @@ describe("routes : posts", () => {
               "Without a doubt my favoriting things to do besides watching paint dry!"
             );
             expect(post.topicId).not.toBeNull();
+            done();
+          })
+          .catch(err => {
+            console.log(err);
+            done();
+          });
+      });
+    });
+
+    it("should not create a new post that fails validations", done => {
+      const options = {
+        url: `${base}/${this.topic.id}/posts/create`,
+        form: {
+          title: "a",
+          body: "b"
+        }
+      };
+
+      request.post(options, (err, res, body) => {
+        Post.findOne({ where: { title: "a" } })
+          .then(post => {
+            expect(post).toBeNull();
             done();
           })
           .catch(err => {
@@ -139,7 +160,8 @@ describe("routes : posts", () => {
       const options = {
         url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
         form: {
-          title: "Snowman Building Competition"
+          title: "Snowman Building Competition",
+          body: "I really enjoy the funny hats on them."
         }
       };
       request.post(options, (err, res, body) => {
